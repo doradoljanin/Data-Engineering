@@ -18,9 +18,7 @@ df = pd.DataFrame(results, columns=["id", "player_id", "url", "name", "full_name
             "country_of_birth", "positions", "current_club", "national_team", "num_appearances_curr_club", "goals_curr_club", 
             "scraping_timestamp", "age_category", "goals_per_club_game"])
 
-# Display the DataFrame
-pd.options.display.max_columns = 20
-print(df)
+df.to_csv('players_data_enriched.csv', index=False)
 
 # Close the db connection
 db_helper.close()

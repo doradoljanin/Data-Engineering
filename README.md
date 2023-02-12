@@ -2,8 +2,7 @@
 
 ## Introduction
 
-This repository contains a solution for a simple web scraper that scrapes data from the specified website and stores it in a SQL Database. It enables additional queries for enriching the data and calculating specific metrics.
-
+This repository contains a solution for a simple web scraper that scrapes data from the specified website and stores it in a SQL Database. It enables additional queries for enriching the data and calculating specific metrics. The solution is implemented using the Python programming language and the PostgreSQL database.
 
 ## Requirements
 
@@ -14,33 +13,40 @@ This repository contains a solution for a simple web scraper that scrapes data f
   * requests
   * beautifulsoup4
 
+## Description
+
+### playersScraper.py:
+
+This file contains the main logic for scraping the data from the player URLs, parsing the HTML pages, and storing the data into the PostgreSQL database. It also handles updating existing players in the database.
+
+### dbHelper.py:
+
+This file contains the functions for performing database operations such as connecting to the database, creating tables, inserting data, and querying data.
 
 ## Installation
 
 1. Clone the repository to your local machine.
-3. Install the required libraries by running:
 
 ```
-
+git clone https://github.com/doradoljanin/Data-Engineering.git
 ```
 
-```
-pip install -r 
-```
+2. Install the required libraries by running:
 
-By installing these packages with pip install -r requirements.txt, you will be able to run the web scraper code on your computer.
-
+```
+pip install -r requirements.txt
+```
 
 ## Usage
 
-1. Run the script by executing the following command:
+1. Import the initially delivered data (playersData.csv) into the SQL database by executing the following command:
 
-This solution has two .py files:
+```
+python fillDatabase.py playersData.csv
+```
 
-playersScraper.py: This file contains the main logic for scraping the data from the player URLs, parsing the HTML pages, and storing the data into the PostgreSQL database. It also handles updating existing players in the database.
-
-dbHelper.py: This file contains the functions for performing database operations such as connecting to the database, creating tables, inserting data, and querying data.
-
-To run the scraper script from the command line using the playersURLs.csv file as an argument, run 'python playersScraper.py playersURLs.csv'.
-
-Note: napraviti da se username i password za posgresql bazu podataka primaju kao argumenti? - za testni zadatak ne treba
+2. Import the scraped data into the SQL database by executing the following command:
+3. Enrich all players' data with columns AgeCategory and GoalsPerClubGame by executing the following command::
+4. Calculate the average age, the average number of appearances and the total number of players by club
+5. extract the number of players who are younger, play in the same position and have a
+   higher number of current club appearances for every player from one chosen club

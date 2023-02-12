@@ -1,5 +1,4 @@
 import psycopg2
-from psycopg2 import Error
 
 # A class for connecting to a PostgreSQL database using the psycopg2 library
 class DbHelper:
@@ -16,11 +15,54 @@ class DbHelper:
    def close(self):
       self.conn.close()
 
+   def create_players_table(self):
+      try:
+         # create a cursor object
+         cur = self.conn.cursor()
+
+         # create the players table
+         cur.execute("""
+            CREATE TABLE players (
+            id SERIAL,
+            player_id VARCHAR(255),
+            url VARCHAR(255) PRIMARY KEY,
+            name VARCHAR(255),
+            full_name VARCHAR(255),
+            date_of_birth DATE,
+            age INT,
+            place_of_birth VARCHAR(255),
+            country_of_birth VARCHAR(255),
+            positions VARCHAR(255),
+            current_club VARCHAR(255),
+            national_team VARCHAR(255),
+            num_appearances_curr_club INT,
+            goals_curr_club INT,
+            scraping_timestamp TIMESTAMP
+            );
+         """)
+
+         self.conn.commit()
+
+      except (Exception, psycopg2.DatabaseError) as error:
+         print(f"Exception handled: Error while creating players table: {error}")
+         self.conn.rollback()
+
+      finally:
+         cur.close()
+
    # Returns True if player with the given url already exists in the database, False otherwise
    def check_player_exists(self, player_url):
-      cur = self.conn.cursor()
-      cur.execute("SELECT 1 FROM players WHERE url = %s", (player_url,))
-      return cur.fetchone() is not None
+      try:
+         cur = self.conn.cursor()
+         cur.execute("SELECT 1 FROM players WHERE url = %s", (player_url,))
+         result = cur.fetchone()
+         cur.close()
+         return result is not None
+
+      except (Exception, psycopg2.DatabaseError) as error:
+         print(f"Exception handled: Error while selecting all players data: {error}")
+         self.conn.rollback()
+         return None
 
    # Gets All Players Data
    def getAllPlayersData(self):
@@ -38,7 +80,7 @@ class DbHelper:
          self.conn.commit()
 
       except (Exception, psycopg2.DatabaseError) as error:
-         print(f"Error while selecting all players data: {error}")
+         print(f"Exception handled: Error while selecting all players data: {error}")
          self.conn.rollback()
 
       finally:
@@ -78,7 +120,7 @@ class DbHelper:
          self.conn.commit()
 
       except (Exception, psycopg2.DatabaseError) as error:
-         print(f"Error while updating player data: {error}")
+         print(f"Exception handled: Error while updating player data: {error}")
          self.conn.rollback()
 
       finally:
@@ -119,7 +161,7 @@ class DbHelper:
          self.conn.commit()
 
       except (Exception, psycopg2.DatabaseError) as error:
-         print(f"Error while inserting player data: {error}")
+         print(f"Exception handled: Error while inserting player data: {error}")
          self.conn.rollback()
 
       finally:
@@ -150,7 +192,7 @@ class DbHelper:
          self.conn.commit()
 
       except (Exception, psycopg2.DatabaseError) as error:
-         print(f"Error while setting age_category column: {error}")
+         print(f"Exception handled: Error while setting age_category column: {error}")
          self.conn.rollback()
 
       finally:
@@ -178,7 +220,7 @@ class DbHelper:
          self.conn.commit()
 
       except (Exception, psycopg2.DatabaseError) as error:
-         print(f"Error while setting goals_per_club_game column: {error}")
+         print(f"Exception handled: Error while setting goals_per_club_game column: {error}")
          self.conn.rollback()
 
       finally:
@@ -195,13 +237,14 @@ class DbHelper:
          query = """
             SELECT 
                current_club, 
-               AVG(age) as avg_age, 
-               AVG(num_appearances_curr_club) as avg_appearances, 
+               ROUND(AVG(age), 2) as avg_age, 
+               ROUND(AVG(num_appearances_curr_club), 2) as avg_appearances, 
                COUNT(player_id) as total_players
             FROM 
                players
             GROUP BY 
                current_club;
+
          """
 
          # execute the query
@@ -213,7 +256,7 @@ class DbHelper:
          self.conn.commit()
 
       except (Exception, psycopg2.DatabaseError) as error:
-         print(f"Error while getting AvgAgeAppearTotalPlayersByClub: {error}")
+         print(f"Exception handled: Error while getting AvgAgeAppearTotalPlayersByClub: {error}")
          self.conn.rollback()
 
       finally:
@@ -253,7 +296,7 @@ class DbHelper:
          self.conn.commit()
 
       except (Exception, psycopg2.DatabaseError) as error:
-         print(f"Error while getting YoungerSamePositionMoreAppearances: {error}")
+         print(f"Exception handled: Error while getting YoungerSamePositionMoreAppearances: {error}")
          self.conn.rollback()
 
       finally:

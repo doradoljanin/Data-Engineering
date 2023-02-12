@@ -1,5 +1,6 @@
 import pandas as pd
 import dbHelper
+import sys
 
 def convert_date_format(date_str):
    if(len(date_str) == 0): return None
@@ -9,16 +10,17 @@ def convert_date_format(date_str):
 # Create a dbHelper object
 db_helper = dbHelper.DbHelper(host="localhost", database="playersData", user="postgres", password="bazepodataka", port="5433")
 
-data = pd.read_csv("playersData.csv", sep=";")
+db_helper.create_players_table()
+
+players_data_file = sys.argv[1]
+
+data = pd.read_csv(players_data_file, sep=";")
 
 selected_columns = ['PlayerID', 'URL', 'Name', 'Full name', 'Date of birth', 'Age', 'City of birth', 'Country of birth', 'Position', 'Current club', 'National_team']
 data = data[selected_columns]
 
 # Fill all NaN values with 'Unknown'
 data.fillna('', inplace=True)
-
-for col in selected_columns:
-   print(col, data[col].duplicated().any())
 
 for index, row in data.iterrows():
    player = {

@@ -11,9 +11,7 @@ if results is not None:
    # Create a DataFrame from the results
    df = pd.DataFrame(results, columns=['current_club', 'avg_age', 'avg_appearances', 'total_players'])
 
-   # Display the DataFrame
-   pd.options.display.max_columns = 5
-   print(df)
+   df.to_csv('avg_age_appearances_total_players.csv', index=False)
 
 # Close the db connection
 db_helper.close()

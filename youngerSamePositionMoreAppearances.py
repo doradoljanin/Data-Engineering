@@ -14,8 +14,7 @@ if results is not None:
    # Create a DataFrame from the results
    df = pd.DataFrame(results, columns=['name', 'count_younger_same_pos_more_app'])
 
-   # Display the DataFrame
-   print(df)
+   df.to_csv('younger_same_pos_more_app.csv', index=False)
 
 # Close the db connection
 db_helper.close()

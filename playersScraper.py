@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import dbHelper
 import sys
 import re
+import pandas as pd
 
 def only_letters(string):
     return re.sub(r'[^a-zA-Z]+', '', string)
@@ -43,7 +44,7 @@ for player_url in player_urls:
 
         try: 
             age = soup.find("span", {"class": "noprint ForceAgeToShow"}).text
-            age = age.split()[1][:-1]
+            age = int(age.split()[1][:-1])
         except: age = None
 
         try:
@@ -68,10 +69,10 @@ for player_url in player_urls:
             national_team = teams[-1].text[1:]
         except: national_team = None
 
-        try: num_appearances_curr_club = next(team.find_next('td', class_='infobox-data-b').text[1:] for team in teams if team.text[1:] == current_team)
+        try: num_appearances_curr_club = int(next(team.find_next('td', class_='infobox-data-b').text[1:] for team in teams if team.text[1:] == current_team))
         except: num_appearances_curr_club = None
 
-        try: goals_curr_club = next(team.find_next('td', class_='infobox-data-c').text[2:-1] for team in teams if team.text[1:] == current_team)
+        try: goals_curr_club = int(next(team.find_next('td', class_='infobox-data-c').text[2:-1] for team in teams if team.text[1:] == current_team))
         except: goals_curr_club = None
 
         # Fill in the extracted information into a dictionary
@@ -91,9 +92,11 @@ for player_url in player_urls:
             "goals": goals_curr_club,
             "scraping_timestamp": 'now()'
         }
-
+        
         # Check if the player information for the given URL already exists in the database
         player_exists = db_helper.check_player_exists(player_url)
+
+        if player_exists is None: break
 
         # Update the existing player information if it exists, otherwise insert as a new record
         if player_exists:
@@ -102,6 +105,17 @@ for player_url in player_urls:
             db_helper.insert_player(player)
     else:
         print("Failed to retrieve the page")
+
+    # Fetch the results
+    results = db_helper.getAllPlayersData()
+
+    # Create a DataFrame from the results
+    df = pd.DataFrame(results, columns=["id", "player_id", "url", "name", "full_name", "date_of_birth", "age", "place_of_birth", 
+                "country_of_birth", "positions", "current_club", "national_team", "num_appearances_curr_club", "goals_curr_club", 
+                "scraping_timestamp"])
+
+    df.to_csv('players_data_scraped.csv', index=False)
+
 
 # Close the db connection
 db_helper.close()
