@@ -13,15 +13,27 @@ This repository contains a solution for a simple web scraper that scrapes data f
   * requests
   * beautifulsoup4
 
-## Description
+## Description of the solution
 
-### playersScraper.py:
+##### playersScraper.py:
 
-This file contains the main logic for scraping the data from the player URLs, parsing the HTML pages, and storing the data into the PostgreSQL database. It also handles updating existing players in the database.
+This file contains the main logic for scraping the data from the player URLs, parsing the HTML pages, and calling dbHelper to insert or update the data in the PostgreSQL database. Additionally, it saves the resulting data table to the players_data_scraped.csv file.
 
-### dbHelper.py:
+##### dbHelper.py:
 
-This file contains the functions for performing database operations such as connecting to the database, creating tables, inserting data, and querying data.
+This file contains the functions for performing database operations such as connecting to the database, creating tables, inserting data, updating data and querying data.
+
+##### enrichDataWithAgeCategoryAndGoalsPerGame.py
+
+Enriches players' data by adding two new columns: AgeCategory (string) and GoalsPerClubGame (float). The results are saved to the players_data_enriched.csv file.
+
+#### avgAgeAppearTotalPlayersByClub.py
+
+Executes a query for calculating the average age, the average number of appearances and the total number of players by club. The results are saved to the avg_age_appearances_total_players.csv file.
+
+#### youngerSamePositionMoreAppearances.py
+
+Executes a query that will do the following: for every player from one chosen club, extract the number of players who are younger, play in the same position and have a higher number of current club appearances than that player. The results are saved to the younger_same_pos_more_app.csv file. 
 
 ## Installation
 
@@ -46,7 +58,29 @@ python fillDatabase.py playersData.csv
 ```
 
 2. Import the scraped data into the SQL database by executing the following command:
-3. Enrich all players' data with columns AgeCategory and GoalsPerClubGame by executing the following command::
-4. Calculate the average age, the average number of appearances and the total number of players by club
-5. extract the number of players who are younger, play in the same position and have a
-   higher number of current club appearances for every player from one chosen club
+
+```
+python playersScraper.py playersURLs.csv
+```
+
+3. Enrich players' data with columns AgeCategory (string) and GoalsPerClubGame (float) by executing the following command:
+
+```
+python enrichDataWithAgeCategoryAndGoalsPerGame.py
+```
+
+4. Calculate the average age, the average number of appearances and the total number of players by club by executing the following command:
+
+```
+python avgAgeAppearTotalPlayersByClub.py
+```
+
+5. Extract the number of players who are younger, play in the same position and have a higher number of current club appearances than that player for every playerfrom one chosen club (*club_name*). The script `youngerSamePositionMoreAppearances.py` requires a single argument, `club_name`, which specifies the name of the club for which you want to find players with a younger age and more appearances than the average for that club.
+   ```
+   python youngerSamePositionMoreAppearances.py Liverpool club_name
+   ```
+
+   * For example, if you want to extract data for Liverpool, you should run the script as follows:
+
+```
+        python youngerSamePositionMoreAppearances.py Liverpool
