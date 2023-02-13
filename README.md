@@ -13,7 +13,7 @@ This repository contains a solution for a simple web scraper that scrapes data f
   * requests
   * beautifulsoup4
 
-## Description of the solution
+## Description of the Solution
 
 #### dbHelper.py:
 
