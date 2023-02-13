@@ -81,7 +81,7 @@ python avgAgeAppearTotalPlayersByClub.py
 
 5. Extract the number of players who are younger, play in the same position and have a higher number of current club appearances than that player for every player from one chosen club (*club_name*). The script `youngerSamePositionMoreAppearances.py` requires a single argument `club_name`.
    ```
-   python youngerSamePositionMoreAppearances.py Liverpool club_name
+   python youngerSamePositionMoreAppearances.py club_name
    ```
 
    * For example, if you want to extract data for Liverpool, you should run the script as follows:
