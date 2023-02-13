@@ -15,25 +15,25 @@ This repository contains a solution for a simple web scraper that scrapes data f
 
 ## Description of the solution
 
-##### playersScraper.py:
-
-This file contains the main logic for scraping the data from the player URLs, parsing the HTML pages, and calling dbHelper to insert or update the data in the PostgreSQL database. Additionally, it saves the resulting data table to the players_data_scraped.csv file.
-
 ##### dbHelper.py:
 
 This file contains the functions for performing database operations such as connecting to the database, creating tables, inserting data, updating data and querying data.
 
+##### playersScraper.py:
+
+This file contains the main logic for scraping the data from the players' URLs, parsing the HTML pages, and calling dbHelper to insert or update the data in the PostgreSQL database. Additionally, it saves the resulting data table to the players_data_scraped.csv file.
+
 ##### enrichDataWithAgeCategoryAndGoalsPerGame.py
 
-Enriches players' data by adding two new columns: AgeCategory (string) and GoalsPerClubGame (float). The results are saved to the players_data_enriched.csv file.
+This script calls a dbHelper's function which enriches players' data by adding two new columns: AgeCategory (string) and GoalsPerClubGame (float). The results are saved to the players_data_enriched.csv file.
 
 #### avgAgeAppearTotalPlayersByClub.py
 
-Executes a query for calculating the average age, the average number of appearances and the total number of players by club. The results are saved to the avg_age_appearances_total_players.csv file.
+This script calls a dbHelper's function which executes a query for calculating the average age, the average number of appearances and the total number of players by club. The results are saved to the avg_age_appearances_total_players.csv file.
 
 #### youngerSamePositionMoreAppearances.py
 
-Executes a query that will do the following: for every player from one chosen club, extract the number of players who are younger, play in the same position and have a higher number of current club appearances than that player. The results are saved to the younger_same_pos_more_app.csv file. 
+This script calls a dbHelper's function which executes a query that will do the following: for every player from one chosen club, extract the number of players who are younger, play in the same position and have a higher number of current club appearances than that player. The results are saved to the younger_same_pos_more_app.csv file. 
 
 ## Installation
 
