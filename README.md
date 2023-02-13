@@ -15,15 +15,19 @@ This repository contains a solution for a simple web scraper that scrapes data f
 
 ## Description of the solution
 
-##### dbHelper.py:
+#### dbHelper.py:
 
 This file contains the functions for performing database operations such as connecting to the database, creating tables, inserting data, updating data and querying data.
 
-##### playersScraper.py:
+#### fillDatabase.py
+
+This file imports the initially delivered data (playersData.csv) into the SQL database by calling dbHelper's functions.
+
+#### playersScraper.py:
 
 This file contains the main logic for scraping the data from the players' URLs, parsing the HTML pages, and calling dbHelper to insert or update the data in the PostgreSQL database. Additionally, it saves the resulting data table to the players_data_scraped.csv file.
 
-##### enrichDataWithAgeCategoryAndGoalsPerGame.py
+#### enrichDataWithAgeCategoryAndGoalsPerGame.py
 
 This script calls a dbHelper's function which enriches players' data by adding two new columns: AgeCategory (string) and GoalsPerClubGame (float). The results are saved to the players_data_enriched.csv file.
 
