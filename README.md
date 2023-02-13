@@ -21,7 +21,7 @@ This file contains the functions for performing database operations such as conn
 
 #### fillDatabase.py
 
-This file imports the initially delivered data (playersData.csv) into the SQL database by calling dbHelper's functions.
+This script imports the initially delivered data (playersData.csv) into the SQL database by calling dbHelper's functions.
 
 #### playersScraper.py:
 
